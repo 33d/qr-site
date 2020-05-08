@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>QR code generator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<style>
+body, html {
+  height: 100%;
+  width: 100%;
+  border: 0;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-content: stretch;
+  align-items: stretch;
+  position: relative;
+}
+
+#top {
+  order: 0;
+  flex: 0;
+  align-self: auto;
+  text-align: center;
+  margin: 1em;
+}
+
+#qrcode {
+  order: 0;
+  flex: 1;
+  align-self: auto;
+  margin: 1em;
+  text-align: center;
+  overflow: hidden;
+}
+
+#qrcode svg {
+  height: 100%;
+  width: 100%;
+}
+
+#text {
+  width: 80%;
+}
+</style>
+</head>
+<body>
+<div id="top">
+<input id="text" type="text" value="https://www.wikipedia.org"/>
+</div>
+<div id="qrcode"/>
+<script>
+var textfield = document.getElementById("text");
+
+function makeCode () {		
+  if (!textfield.value)
+    return;
+  var qr = qrcode(0, 'M');
+  qr.addData(textfield.value);
+  qr.make();
+  var qrContainer = document.getElementById("qrcode");
+  qrContainer.innerHTML = qr.createSvgTag({
+    scalable: true
+  });
+  qrContainer.children[0].setAttribute("preserveAspectRatio", "xMidyMid meet");
+}
+
+makeCode();
+
+textfield.addEventListener('input', makeCode);
+
+</script>
+</body>
+</html>
+
