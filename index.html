@@ -51,17 +51,19 @@ body {
 </head>
 <body>
 <div id="top">
-<input id="text" type="text" value="https://www.wikipedia.org"/>
+<input id="text" type="text"/>
 </div>
 <div id="qrcode"/>
 <script>
 var textfield = document.getElementById("text");
 
-function makeCode () {		
-  if (!textfield.value)
+function makeCode (value) {
+  if (!value)
     return;
+  textfield.value = value;
+  window.location.assign("#" + value);
   var qr = qrcode(0, 'M');
-  qr.addData(textfield.value);
+  qr.addData(value);
   qr.make();
   var qrContainer = document.getElementById("qrcode");
   qrContainer.innerHTML = qr.createSvgTag({
@@ -70,9 +72,13 @@ function makeCode () {
   qrContainer.children[0].setAttribute("preserveAspectRatio", "xMidyMid meet");
 }
 
-makeCode();
+  debugger;
+makeCode((window.location.hash || "#https://www.wikipedia.org").substring(1));
 
-textfield.addEventListener('input', makeCode);
+textfield.addEventListener('input', () => {
+  window.location.assign("#" + textfield.value);
+  makeCode(textfield.value);
+});
 
 </script>
 </body>
